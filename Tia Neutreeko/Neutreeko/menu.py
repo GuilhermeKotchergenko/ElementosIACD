@@ -19,7 +19,7 @@ def draw_menu(screen, bg):
         #Check if mouse is hovering over the button
         mouse_x, mouse_y = pygame.mouse.get_pos()
         if button_rect.collidepoint(mouse_x, mouse_y):
-            pygame.draw.rect(screen, button_hover_color, button_rect)
+            pygame.draw.rect(screen, button_hover_color, button_rect, 0, 30)
 
         #Render button text
         font = pygame.font.Font('Starborn.ttf', 40)
