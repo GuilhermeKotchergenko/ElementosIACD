@@ -3,9 +3,9 @@ from .constants import *
 
 #Creates the board for display on the screen
 
-white =  pygame.transform.scale(pygame.image.load('WhitePiece.png'), (78, 78))
-black =  pygame.transform.scale(pygame.image.load('BlackPiece.png'), (78, 78))
-Tia = pygame.transform.scale(pygame.image.load('TiaMaid.png'), (350, 513))
+white =  pygame.transform.scale(pygame.image.load('WhitePiece.png'), (((board_height // 5.35)), ((board_width // 5.35))))
+black =  pygame.transform.scale(pygame.image.load('BlackPiece.png'), (((board_height // 5.35)), ((board_width // 5.35))))
+Tia = pygame.transform.scale(pygame.image.load('TiaMaid.png'), (500, 733))
 
 #Draws the pieces on the board
 def create_board():

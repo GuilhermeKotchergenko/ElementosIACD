@@ -32,14 +32,14 @@ def main():
             elif event. type == MOUSEBUTTONDOWN:
                 mouse_x, mouse_y = pygame.mouse.get_pos()
                 if BUTTON_X <= mouse_x <= BUTTON_X + BUTTON_WIDTH:
-                    for i, mode in enumerate(["Player vs. Player", "Player vs. AI", "AI vs. AI"]):
+                    for i, mode in enumerate(["Player x Player", "Player x AI", "AI x AI"]):
                         button_y = BUTTON_Y_START + i * (BUTTON_HEIGHT + BUTTON_GAP)
                         if button_y <= mouse_y <= button_y + BUTTON_HEIGHT:
                             selected_mode = mode
                             break
 
                     #Checks for selected mode then runs the game   
-                    if selected_mode == "Player vs. Player":
+                    if selected_mode == "Player x Player":
                         board = create_board()
                         previous_states = []
                         current_player = 2
@@ -67,7 +67,7 @@ def main():
                                                 print("The game is a draw due to repetition.")
                                                 game_over = True
                                             if check_win(board, current_player):
-                                                display_message(screen, f'Player {current_player} wins!')
+                                                display_message(screen, f'{"Black" if current_player == 2 else "White"} wins!')
                                                 game_over = True
                                             current_player = 2 if current_player == 1 else 1
                                         else:
