@@ -14,7 +14,7 @@ def draw_menu(screen, bg):
     button_y = BUTTON_Y_START
     for mode in ["Player x Player", "Player x AI", "AI x AI"]:
         button_rect = pygame.Rect(BUTTON_X, button_y, BUTTON_WIDTH, BUTTON_HEIGHT)
-        pygame.draw.rect(screen, button_color, button_rect)
+        pygame.draw.rect(screen, button_color, button_rect, 0, 30)
 
         #Check if mouse is hovering over the button
         mouse_x, mouse_y = pygame.mouse.get_pos()
@@ -22,7 +22,7 @@ def draw_menu(screen, bg):
             pygame.draw.rect(screen, button_hover_color, button_rect)
 
         #Render button text
-        font = pygame.font.Font('Starborn.ttf', 42)
+        font = pygame.font.Font('Starborn.ttf', 40)
         text = font.render(mode, True, (255, 255, 255))
         text_rect = text.get_rect(center=button_rect.center) 
         screen.blit(text, text_rect)

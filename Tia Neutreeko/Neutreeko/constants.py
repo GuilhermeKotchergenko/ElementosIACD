@@ -20,7 +20,7 @@ icon = pygame.image.load('Logo32.png')
 #Button
 BUTTON_WIDTH = 450
 BUTTON_HEIGHT = 100
-BUTTON_GAP = 40
+BUTTON_GAP = 50
 BUTTON_X = (window_width - BUTTON_WIDTH) // 1.5
 BUTTON_Y_START = 200
 
