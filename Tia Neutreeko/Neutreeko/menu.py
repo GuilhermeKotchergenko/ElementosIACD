@@ -19,6 +19,7 @@ def draw_menu(screen, bg):
         #Check if mouse is hovering over the button
         mouse_x, mouse_y = pygame.mouse.get_pos()
         if button_rect.collidepoint(mouse_x, mouse_y):
+            redraw = True
             pygame.draw.rect(screen, button_hover_color, button_rect, 0, 30)
 
         #Render button text
@@ -33,5 +34,6 @@ def draw_menu(screen, bg):
     character_y = (window_height - Tia.get_height()) //  2
     screen.blit(Tia, (character_x, character_y))
 
+    pygame.time.wait(10)
     pygame.display.flip()
 

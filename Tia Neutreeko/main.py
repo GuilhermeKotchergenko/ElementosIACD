@@ -15,7 +15,7 @@ def main():
     pygame.font.init()
     screen = pygame.display.set_mode((window_width, window_height))
     pygame.display.set_caption("Tia Neutreeko!")
-    bg = pygame.transform.scale(pygame.image.load('BackgroundOwO.png'), (window_width, window_height))
+    bg = pygame.transform.scale(pygame.image.load('Background.png'), (window_width, window_height))
     pygame.display.set_icon(icon)
     clock = pygame.time.Clock()
     FPS = 15
@@ -23,6 +23,8 @@ def main():
     while True:
         draw_menu(screen, bg)
         pygame.display.update()
+
+        clock.tick(FPS)
         selected_mode = None
 
         for event in pygame.event.get():
@@ -40,8 +42,9 @@ def main():
 
                     #Checks for selected mode then runs the game   
                     if selected_mode == "Player x Player":
-                        board = create_board()
-                        previous_states = []
+                        board = create_board() 
+                        draw_board(screen, board, bg)
+                        previous_states = [] #Checks for repetition
                         current_player = 2
                         game_over = False
                         selected_piece = None
@@ -64,21 +67,28 @@ def main():
                                             selected_piece = None
                                             previous_states.append(tuple(map(tuple, board)))
                                             if previous_states.count(tuple(map(tuple, board))) == 3:
-                                                print("The game is a draw due to repetition.")
+                                                display_messagedraw(screen, "DRAW!")
                                                 game_over = True
                                             if check_win(board, current_player):
-                                                display_message(screen, f'{"Black" if current_player == 2 else "White"} wins!')
+                                                display_messagewin(screen, f'{"Black" if current_player == 2 else "White"} wins!')
                                                 game_over = True
                                             current_player = 2 if current_player == 1 else 1
                                         else:
-                                            selected_piece = None #Deselect the piece if the move is invalid
+                                            if 0 <= row < rows and 0 <= col < cols and board[row][col] == current_player:
+                                                draw_board(screen, board, bg)
+                                                selected_piece = (row, col)
+                                                draw_possible_moves(screen, board, selected_piece)  
                                     else:
                                         #Select a piece
                                         if 0 <= row < rows and 0 <= col < cols and board[row][col] == current_player:
-                                            selected_piece = (row, col)   
-
-                            draw_board(screen, board, bg)
+                                            draw_board(screen, board, bg)
+                                            selected_piece = (row, col)
+                                            draw_possible_moves(screen, board, selected_piece)
+                            
                             pygame.display.update()
-    
+                            
+        pygame.display.update()
+        pygame.time.wait(10)
+
 if __name__ == '__main__':
     main()

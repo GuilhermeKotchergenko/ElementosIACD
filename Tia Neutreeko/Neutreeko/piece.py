@@ -54,15 +54,18 @@ def is_valid_move(board, start, end):
         for col in range(start_col + delta_col, cols if delta_col == 1 else -1, delta_col):
             if board[start_row][col] != 0:
                 return col - delta_col == end_col
+        return end_col == (cols - 1 if delta_col == 1 else 0)
     elif start_col == end_col:  # Vertical move
         for row in range(start_row + delta_row, rows if delta_row == 1 else -1, delta_row):
             if board[row][start_col] != 0:
                 return row - delta_row == end_row
+        return end_row == (rows - 1 if delta_row == 1 else 0)
     else:  # Diagonal move
         for delta in range(1, min(rows, cols)):
             row = start_row + delta_row * delta
             col = start_col + delta_col * delta
             if not (0 <= row < rows and 0 <= col < cols) or board[row][col] != 0:
                 return row - delta_row == end_row and col - delta_col == end_col
+        return end_row == (rows - 1 if delta_row == 1 else 0) and end_col == (cols - 1 if delta_col == 1 else 0)
 
     return True
