@@ -4,7 +4,6 @@ from .piece import *
 
 
 #Creates the board for display on the screen
-
 white =  pygame.transform.scale(pygame.image.load('./Assets/WhitePiece.png'), (((board_height // 5.35)), ((board_width // 5.35))))
 black =  pygame.transform.scale(pygame.image.load('./Assets/BlackPiece.png'), (((board_height // 5.35)), ((board_width // 5.35))))
 Tia = pygame.transform.scale(pygame.image.load('./Assets/TiaMaid.png'), (500, 733))

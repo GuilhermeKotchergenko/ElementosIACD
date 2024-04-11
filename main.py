@@ -15,7 +15,7 @@ def main():
     pygame.font.init()
     screen = pygame.display.set_mode((window_width, window_height))
     pygame.display.set_caption("Tia Neutreeko!")
-    bg = pygame.transform.scale(pygame.image.load('./Assets/Background.png'), (window_width, window_height))
+    bg = pygame.transform.scale(pygame.image.load('./Assets/Background.png').convert(), (window_width, window_height))
     pygame.display.set_icon(icon)
     clock = pygame.time.Clock()
     FPS = 15
