@@ -1,2 +1,0 @@
-# ElementosIACD
-Projeto Elementos IACD

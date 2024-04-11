@@ -1,6 +1,5 @@
 import pygame
 from time import sleep
-import random  # Add this for the placeholder random move selection
 from Neutreeko.constants import *
 from Neutreeko.piece import *
 from Neutreeko.board import *
@@ -8,13 +7,15 @@ from Neutreeko.wincon import *
 from Neutreeko.messages import *
 from Neutreeko.menu import *
 
-# Main Function, code should be ran through here. Executes game.
+
+#Main Function, code should be ran trought here. Executes game.
+
 def main():
     pygame.init()
     pygame.font.init()
     screen = pygame.display.set_mode((window_width, window_height))
     pygame.display.set_caption("Tia Neutreeko!")
-    bg = pygame.transform.scale(pygame.image.load('BackgroundOwO.png'), (window_width, window_height))
+    bg = pygame.transform.scale(pygame.image.load('./Assets/Background.png'), (window_width, window_height))
     pygame.display.set_icon(icon)
     clock = pygame.time.Clock()
     FPS = 15
@@ -22,27 +23,29 @@ def main():
     while True:
         draw_menu(screen, bg)
         pygame.display.update()
+
+        clock.tick(FPS)
         selected_mode = None
-        AI_player = 2  # Assuming AI is player 2
 
         for event in pygame.event.get():
             if event.type == QUIT:
                 pygame.quit()
                 return
-            elif event.type == MOUSEBUTTONDOWN:
-                mouse_x, mouse_y = pygame.mouse.get_pos()
-                if BUTTON_X <= mouse_x <= BUTTON_X + BUTTON_WIDTH:
-                    for i, mode in enumerate(["Player vs. Player", "Player vs. AI", "AI vs. AI"]):
+            elif event. type == MOUSEBUTTONDOWN:
+                mouseX, mouseY = pygame.mouse.get_pos()
+                if BUTTON_X <= mouseX <= BUTTON_X + BUTTON_WIDTH:
+                    for i, mode in enumerate(["Player x Player", "Player x AI", "AI x AI"]):
                         button_y = BUTTON_Y_START + i * (BUTTON_HEIGHT + BUTTON_GAP)
-                        if button_y <= mouse_y <= button_y + BUTTON_HEIGHT:
+                        if button_y <= mouseY <= button_y + BUTTON_HEIGHT:
                             selected_mode = mode
                             break
 
-                    # Checks for selected mode then runs the game
-                    if selected_mode == "Player vs. Player" or selected_mode == "Player vs. AI":
-                        board = create_board()
-                        previous_states = []
-                        current_player = 1  # Player 1 starts
+                    #Checks for selected mode then runs the game   
+                    while selected_mode == "Player x Player":
+                        board = create_board() 
+                        draw_board(screen, board, bg)
+                        previous_states = [] #Checks for repetition
+                        current_player = 2
                         game_over = False
                         selected_piece = None
 
@@ -51,11 +54,17 @@ def main():
                             for event in pygame.event.get():
                                 if event.type == pygame.QUIT:
                                     pygame.quit()
-                                    return
-
-                                # Player's turn (for both PvP and PvAI, since AI moves are handled separately)
-                                if event.type == pygame.MOUSEBUTTONDOWN and current_player == 1:
+                                    return 
+                                elif event.type == pygame.MOUSEBUTTONDOWN:
                                     mouseX, mouseY = pygame.mouse.get_pos()
+                                    if (BUTTON_X // 1.7) <= mouseX <= (BUTTON_X // 1.7) + (BUTTON_WIDTH // 3.2):
+                                        for mode in (["<--"]):
+                                            button_y = BUTTON_Y_START + i * (BUTTON_HEIGHT + BUTTON_GAP)
+                                            if (button_y + 430) <= mouseY <= (button_y + 430) + BUTTON_HEIGHT:
+                                                game_over = True
+                                                selected_mode = None
+                                                break
+
                                     col = int((mouseX - board_x) // square_size)
                                     row = int((mouseY - board_y) // square_size)
 
@@ -66,42 +75,30 @@ def main():
                                             selected_piece = None
                                             previous_states.append(tuple(map(tuple, board)))
                                             if previous_states.count(tuple(map(tuple, board))) == 3:
-                                                display_message(screen, "The game is a draw due to repetition.")
+                                                display_message(screen, "DRAW!")
                                                 game_over = True
-                                                break
                                             if check_win(board, current_player):
-                                                display_message(screen, f'Player {current_player} wins!')
+                                                display_message(screen, f'{"Black" if current_player == 2 else "White"} wins!')
                                                 game_over = True
-                                                break
                                             current_player = 2 if current_player == 1 else 1
                                         else:
-                                            selected_piece = None  # Deselect the piece if the move is invalid
+                                            if 0 <= row < rows and 0 <= col < cols and board[row][col] == current_player:
+                                                draw_board(screen, board, bg)
+                                                selected_piece = (row, col)
+                                                draw_possible_moves(screen, board, selected_piece)  
                                     else:
-                                        # Select a piece
+                                        #Select a piece
                                         if 0 <= row < rows and 0 <= col < cols and board[row][col] == current_player:
+                                            draw_board(screen, board, bg)
                                             selected_piece = (row, col)
-
-                            # AI's turn
-                            if selected_mode == "Player vs. AI" and current_player == AI_player and not game_over:
-                                possible_moves = get_all_possible_moves(board, current_player)
-                                selected_move = random.choice(possible_moves) if possible_moves else None
-
-                                if selected_move:
-                                    move_piece(board, current_player, selected_move[0], selected_move[1])
-                                    draw_board(screen, board, bg)
-                                    previous_states.append(tuple(map(tuple, board)))
-                                    if previous_states.count(tuple(map(tuple, board))) == 3:
-                                        display_message(screen, "The game is a draw due to repetition.")
-                                        game_over = True
-                                        break
-                                    if check_win(board, current_player):
-                                        display_message(screen, f'Player {current_player} wins!')
-                                        game_over = True
-                                        break
-                                    current_player = 1  # Switch back to player 1
-
+                                            draw_possible_moves(screen, board, selected_piece)
+                            
                             draw_board(screen, board, bg)
-                            pygame.display.update()
+                            draw_possible_moves(screen, board, selected_piece)
+                            pygame.display.update()              
+        
+        pygame.display.update()
+        pygame.time.wait(10)
 
 if __name__ == '__main__':
     main()
