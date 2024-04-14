@@ -68,4 +68,17 @@ def is_valid_move(board, start, end):
                 return row - delta_row == end_row and col - delta_col == end_col
         return end_row == (rows - 1 if delta_row == 1 else 0) and end_col == (cols - 1 if delta_col == 1 else 0)
 
-    return True
+def get_possible_moves(board, player):
+    moves = []
+    rows, cols = len(board), len(board[0])
+
+    for start_row in range(rows):
+        for start_col in range(cols):
+            if board[start_row][start_col] == player:
+                # Tente mover para todas as outras células
+                for end_row in range(rows):
+                    for end_col in range(cols):
+                        if is_valid_move(board, (start_row, start_col), (end_row, end_col)):
+                            moves.append(((start_row, start_col), (end_row, end_col)))
+    return moves
+
